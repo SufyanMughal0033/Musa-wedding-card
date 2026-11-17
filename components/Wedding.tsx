@@ -37,16 +37,58 @@ function Backdrop({ src, fallback, kenburns, vertical = false }: { src: string; 
     </motion.div></div>);
 }
 
-function Location({ e, variant, dark }: { e: EventItem; variant: "arch"|"ruled"; dark?: boolean }) {
+
+function Location({
+  e,
+  variant,
+  dark
+}: {
+  e: EventItem;
+  variant: "arch" | "ruled";
+  dark?: boolean;
+}) {
   const ready = !!e.mapLink;
-  const body = (<>
-    <p className="font-script text-4xl">{e.venue}</p>
-    {e.mapEmbed ? <iframe title={`${e.venue} map`} src={e.mapEmbed} loading="lazy" className="mt-3 h-40 w-full border-0"/> : <p className="mt-2 text-lg italic opacity-80"></p>}
-    <a href={e.mapLink||undefined} target="_blank" rel="noreferrer" aria-disabled={!ready} className={`mt-5 inline-block border-b border-gold pb-1 font-display text-xs tracking-[.35em] ${ready?"hover:text-gold":"pointer-events-none opacity-50"}`}></a></>);
+
   const ink = dark ? "text-ivory" : "text-burgundy";
-  return variant==="arch"
-    ? <div className={`mx-auto w-full max-w-sm rounded-t-full border border-gold/70 p-2 ${ink}`}><div className="rounded-t-full border border-gold/40 px-8 pb-10 pt-24 text-center">{body}</div></div>
-    : <div className={`w-full max-w-md border-y border-gold/70 py-7 text-center ${ink}`}>{body}</div>;
+
+  const body = (
+    <>
+      <p className="font-script text-4xl">{e.venue}</p>
+
+      {e.mapEmbed ? (
+        <iframe
+          title={`${e.venue} map`}
+          src={e.mapEmbed}
+          loading="lazy"
+          className="mt-3 h-40 w-full border-0"
+        />
+      ) : null}
+
+      {ready && (
+        <a
+          href={e.mapLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 inline-flex items-center justify-center gap-2 border-b border-gold pb-2 font-display text-xs tracking-[.35em] text-[#f0dba5] transition-colors hover:text-white"
+        >
+          VIEW LOCATION
+          <span aria-hidden>↗</span>
+        </a>
+      )}
+    </>
+  );
+
+  return variant === "arch" ? (
+    <div className={`mx-auto w-full max-w-sm rounded-t-full border border-gold/70 p-2 ${ink}`}>
+      <div className="rounded-t-full border border-gold/40 px-8 pb-10 pt-24 text-center">
+        {body}
+      </div>
+    </div>
+  ) : (
+    <div className={`w-full max-w-md border-y border-gold/70 py-7 text-center ${ink}`}>
+      {body}
+    </div>
+  );
 }
 
 function Garland() {
@@ -129,34 +171,18 @@ function Baraat({ e }: { e: EventItem }) {
           31 December 2026
         </motion.p>
 
-        <motion.div
-          {...reveal(4)}
-          className="mt-12 w-full max-w-md border-y border-[#d7bd83]/50 bg-[#170710]/35 px-6 py-7 backdrop-blur-[3px] sm:px-10"
-        >
-          <p className="font-script text-3xl text-[#f0dba5] sm:text-4xl">{e.venue}</p>
-          {e.mapEmbed ? (
-            <iframe
-              title={`${e.venue} map`}
-              src={e.mapEmbed}
-              loading="lazy"
-              className="mt-5 h-40 w-full border-0"
-            />
-          ) : (
-            <p className="mt-2 text-sm italic tracking-wide text-white/75">
-            </p>
-          )}
-          <a
-            href={e.mapLink || undefined}
-            target="_blank"
-            rel="noreferrer"
-            aria-disabled={!e.mapLink}
-            className={`mt-6 inline-block border-b border-[#d7bd83]/70 pb-1 font-display text-[.68rem] tracking-[.32em] text-[#f0dba5] transition-colors ${
-              e.mapLink ? "hover:text-white" : "pointer-events-none opacity-45"
-            }`}
-          >
-            VIEW LOCATION
-          </a>
-        </motion.div>
+       
+<motion.div
+  {...reveal(4)}
+  className="mt-12 w-full max-w-md"
+>
+  <Location
+    e={e}
+    variant="ruled"
+    dark
+  />
+</motion.div>
+
       </div>
     </section>
   );
@@ -544,6 +570,25 @@ function Closing() {
               className="mt-8 inline-flex items-center gap-2 border-b border-[#b69a59] pb-2 font-display text-[.62rem] tracking-[.35em] text-[#87485b] transition-colors hover:text-[#b69a59]"
             >
               <ArrowUp size={14} />
+              <motion.div {...reveal(4)} className="mt-8">
+  <p className="font-display text-xs tracking-[.3em] text-[#a08049]">
+    FOR ANY QUERIES, CONTACT
+  </p>
+
+  <div className="mt-5 flex flex-col items-center gap-3 font-display text-sm tracking-wider text-[#87485b]">
+    <a href="tel:03217671973" className="transition-colors hover:text-[#b69a59]">
+      Mohsin Shahzad — 0321 7671973
+    </a>
+
+    <a href="tel:03341953572" className="transition-colors hover:text-[#b69a59]">
+     Muhammad Mahad — 0334 1953572
+    </a>
+
+    <a href="tel:03086342929" className="transition-colors hover:text-[#b69a59]">
+      Muhammad Musa — 0308 6342929
+    </a>
+  </div>
+</motion.div>
               BACK TO TOP
             </button>
           </motion.div>
