@@ -41,8 +41,8 @@ function Location({ e, variant, dark }: { e: EventItem; variant: "arch"|"ruled";
   const ready = !!e.mapLink;
   const body = (<>
     <p className="font-script text-4xl">{e.venue}</p>
-    {e.mapEmbed ? <iframe title={`${e.venue} map`} src={e.mapEmbed} loading="lazy" className="mt-3 h-40 w-full border-0"/> : <p className="mt-2 text-lg italic opacity-80">Location Coming Soon</p>}
-    <a href={e.mapLink||undefined} target="_blank" rel="noreferrer" aria-disabled={!ready} className={`mt-5 inline-block border-b border-gold pb-1 font-display text-xs tracking-[.35em] ${ready?"hover:text-gold":"pointer-events-none opacity-50"}`}>VIEW LOCATION</a></>);
+    {e.mapEmbed ? <iframe title={`${e.venue} map`} src={e.mapEmbed} loading="lazy" className="mt-3 h-40 w-full border-0"/> : <p className="mt-2 text-lg italic opacity-80"></p>}
+    <a href={e.mapLink||undefined} target="_blank" rel="noreferrer" aria-disabled={!ready} className={`mt-5 inline-block border-b border-gold pb-1 font-display text-xs tracking-[.35em] ${ready?"hover:text-gold":"pointer-events-none opacity-50"}`}></a></>);
   const ink = dark ? "text-ivory" : "text-burgundy";
   return variant==="arch"
     ? <div className={`mx-auto w-full max-w-sm rounded-t-full border border-gold/70 p-2 ${ink}`}><div className="rounded-t-full border border-gold/40 px-8 pb-10 pt-24 text-center">{body}</div></div>
@@ -143,7 +143,6 @@ function Baraat({ e }: { e: EventItem }) {
             />
           ) : (
             <p className="mt-2 text-sm italic tracking-wide text-white/75">
-              Location details will be shared soon
             </p>
           )}
           <a
