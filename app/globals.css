@@ -53,7 +53,6 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-
   -webkit-text-fill-color: transparent;
 }
 
@@ -90,7 +89,6 @@ body {
 
   -webkit-background-clip: text;
   background-clip: text;
-
   color: transparent;
   -webkit-text-fill-color: transparent;
 
@@ -193,35 +191,12 @@ body {
     inset 0 0 50px rgba(91,37,49,.10);
 }
 
-/* Decorative invitation plaque */
+/*
+  TAP TO OPEN button positioning and clickable
+  area are controlled directly inside Curtain.tsx.
 
-.curtain-plaque-hit {
-  top: 39%;
-
-  width: min(43vw,560px);
-  height: 22%;
-
-  cursor: pointer;
-  background: transparent;
-}
-
-.curtain-plaque-hit:focus-visible {
-  outline-offset: 7px;
-}
-
-/* =========================================
-   RESPONSIVE DESIGN
-========================================= */
-
-@media (max-width: 767px) {
-
-  .curtain-plaque-hit {
-    top: 57.5%;
-    width: 76vw;
-    height: 13.5%;
-  }
-
-}
+  Old oversized .curtain-plaque-hit CSS removed.
+*/
 
 /* =========================================
    ACCESSIBILITY
