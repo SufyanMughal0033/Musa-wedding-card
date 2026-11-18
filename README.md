@@ -1,4 +1,4 @@
-# Ansharah & Azhar — Wedding Invitation
+# ANSHARAH & AZHAR — Wedding Invitation
 
 A Next.js 14 / React / TypeScript wedding invitation experience with a cinematic split-curtain reveal, floral invitation, three event chapters, countdown, timeline, music toggle, and editable venue map links.
 

@@ -56,6 +56,17 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+/* Couple names: uppercase luxury serif (Cinzel) */
+.couple-name {
+  font-family: var(--f-name), var(--f-display), serif;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: .14em;
+  padding-left: .14em; /* optical centring for tracked caps */
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
 /* Stronger text visibility */
 
 .emboss {
@@ -197,6 +208,74 @@ body {
 
   Old oversized .curtain-plaque-hit CSS removed.
 */
+
+/* =========================================
+   SEAM BLEND: Invitation card -> Mehndi video
+   Both gradients meet at the same solid blush (244,223,225), so there is
+   no visible edge; eased stops avoid banding. Static, no animation.
+========================================= */
+
+.blend-card-bottom {
+  background: linear-gradient(180deg,
+    rgba(244,223,225,0) 0%,
+    rgba(244,223,225,.10) 18%,
+    rgba(244,223,225,.34) 38%,
+    rgba(244,223,225,.64) 60%,
+    rgba(244,223,225,.88) 80%,
+    rgba(244,223,225,.98) 93%,
+    rgb(244,223,225) 100%);
+}
+
+.blend-video-top {
+  background: linear-gradient(180deg,
+    rgb(244,223,225) 0%,
+    rgba(244,223,225,.97) 8%,
+    rgba(241,217,212,.88) 18%,
+    rgba(233,203,190,.72) 30%,
+    rgba(220,184,160,.53) 44%,
+    rgba(190,156,120,.34) 58%,
+    rgba(120,112,80,.18) 73%,
+    rgba(40,60,45,.07) 88%,
+    rgba(11,43,33,0) 100%);
+}
+
+/* =========================================
+   EYE-BLINK (Invitation -> Mehndi only)
+========================================= */
+
+.blink-lid {
+  position: absolute;
+  left: -2%;
+  width: 104%;
+  height: 58%;
+  background: radial-gradient(ellipse at 50% 100%, #2a0f18 0%, #14070c 70%);
+  will-change: transform;
+}
+.blink-top {
+  top: 0;
+  border-radius: 0 0 50% 50% / 0 0 20% 20%;
+  box-shadow: 0 2px 0 rgba(215,189,131,.55), 0 10px 40px rgba(20,7,12,.6);
+  animation: blinkTop 560ms cubic-bezier(.45,0,.25,1) both;
+}
+.blink-bottom {
+  bottom: 0;
+  border-radius: 50% 50% 0 0 / 20% 20% 0 0;
+  background: radial-gradient(ellipse at 50% 0%, #2a0f18 0%, #14070c 70%);
+  box-shadow: 0 -2px 0 rgba(215,189,131,.55), 0 -10px 40px rgba(20,7,12,.6);
+  animation: blinkBottom 560ms cubic-bezier(.45,0,.25,1) both;
+}
+@keyframes blinkTop {
+  0% { transform: translateY(-104%); }
+  38% { transform: translateY(0); }
+  46% { transform: translateY(0); }
+  100% { transform: translateY(-104%); }
+}
+@keyframes blinkBottom {
+  0% { transform: translateY(104%); }
+  38% { transform: translateY(0); }
+  46% { transform: translateY(0); }
+  100% { transform: translateY(104%); }
+}
 
 /* =========================================
    ACCESSIBILITY

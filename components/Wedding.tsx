@@ -110,6 +110,8 @@ function Mehndi({ e }: { e: EventItem }) {
     <Backdrop src="/videos/mehndi.mp4" fallback="linear-gradient(150deg,#0f3d2e,#1f5b44 45%,#b88a2a)"/>
     <div className="absolute inset-0 bg-gradient-to-r from-[#0b2b21]/85 via-[#0b2b21]/45 to-transparent"/>
     <Garland/>
+    {/* Seam blend (video side): the film emerges from the same blush tone the card ends in */}
+    <div aria-hidden className="blend-video-top pointer-events-none absolute inset-x-0 top-0 z-[6] h-[38%] min-h-[240px]"/>
     <div className="relative z-10 mx-auto grid min-h-screen max-w-6xl items-end gap-10 px-6 pb-24 pt-64 md:grid-cols-[1.2fr_1fr] md:items-center md:pt-24">
       <div>
         <motion.p {...reveal()} className="font-script text-3xl text-[#f3d98b] sm:text-4xl">Chapter One</motion.p>
@@ -223,6 +225,7 @@ function Invitation() {
     [0, 1],
     [reduce ? 0 : 18, reduce ? 0 : -22]
   );
+
 
   return (
     <section
@@ -351,9 +354,9 @@ function Invitation() {
               {/* Bride */}
               <motion.h2
                 {...reveal(3)}
-                className="foil mt-4 font-script text-[clamp(2rem,8.2vw,6rem)] leading-tight"
+                className="foil couple-name mt-4 text-[clamp(1.35rem,7vw,1.9rem)] sm:text-[clamp(1.5rem,4.2vw,3.2rem)]"
               >
-                Ansharah
+                ANSHARAH
               </motion.h2>
 
               {/* Elegant separator */}
@@ -369,9 +372,9 @@ function Invitation() {
               {/* Groom */}
               <motion.h2
                 {...reveal(5)}
-                className="foil font-script text-[clamp(2rem,8.2vw,6rem)] leading-tight"
+                className="foil couple-name text-[clamp(1.35rem,7vw,1.9rem)] sm:text-[clamp(1.5rem,4.2vw,3.2rem)]"
               >
-                Azhar
+                AZHAR
               </motion.h2>
 
               <div className="my-5 flex items-center gap-3 sm:my-7">
@@ -466,7 +469,42 @@ function Invitation() {
 
         </div>
       </motion.div>
+
+      {/* Seam blend (card side): bottom edge eases into one uniform blush tone */}
+      <div aria-hidden className="blend-card-bottom pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[16%] min-h-[96px]" />
     </section>
+  );
+}
+
+/* Single eyelid blink: only for the Invitation -> Mehndi crossing (scrolling down) */
+function EyeBlink() {
+  const [run, setRun] = useState(0);
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    if (reduce) return;
+    let armed = true, busy = false, raf = 0;
+    const check = () => {
+      raf = 0;
+      const el = document.getElementById("mehndi"); if (!el) return;
+      const top = el.getBoundingClientRect().top, vh = window.innerHeight;
+      if (top > vh * 0.92) armed = true;                       // user is back above: re-arm
+      if (armed && !busy && top > 0 && top <= vh * 0.55) {      // seam has risen into view while scrolling down
+        armed = false; busy = true; setRun(n => n + 1);
+        // at the moment the eyes are fully closed, land on the Mehndi section
+        setTimeout(() => { const t = document.getElementById("mehndi"); if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY, behavior: "instant" as ScrollBehavior }); }, 230);
+        setTimeout(() => { busy = false; setRun(0); }, 700);
+      }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(check); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); if (raf) cancelAnimationFrame(raf); };
+  }, [reduce]);
+  if (!run) return null;
+  return (
+    <div key={run} aria-hidden className="pointer-events-none fixed inset-0 z-[65] overflow-hidden">
+      <div className="blink-lid blink-top" />
+      <div className="blink-lid blink-bottom" />
+    </div>
   );
 }
 
@@ -551,9 +589,11 @@ function Closing() {
 
           <motion.h2
             {...reveal(2)}
-            className="foil mt-5 font-script text-5xl leading-tight sm:text-8xl"
+            className="mt-5 flex flex-col items-center"
           >
-            Ansharah &amp; Azhar
+            <span className="foil couple-name text-[clamp(2rem,9vw,2.6rem)] sm:text-6xl">ANSHARAH</span>
+            <span aria-hidden className="my-1 font-script text-4xl text-gold sm:my-2 sm:text-6xl">&amp;</span>
+            <span className="foil couple-name text-[clamp(2rem,9vw,2.6rem)] sm:text-6xl">AZHAR</span>
           </motion.h2>
 
           <Flourish className="mt-6 w-44 sm:w-60" />
@@ -606,6 +646,6 @@ export default function Wedding() {
     <Curtain onOpen={()=>setStarted(true)} onReveal={()=>setShown(true)}/>
     <Music started={started}/>
     {started && <Petals n={shown?10:26}/>}
-    {shown && <><Invitation/><Mehndi e={m}/><Baraat e={h}/><Walima e={w}/><Countdown/><Closing/></>}
+    {shown && <><EyeBlink/><Invitation/><Mehndi e={m}/><Baraat e={h}/><Walima e={w}/><Countdown/><Closing/></>}
   </main>);
 }
